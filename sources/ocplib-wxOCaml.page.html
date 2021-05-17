@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+#include "head.include"
+   <title>TypeRex: ocplib-wxOCaml</title>
+</head>
+<body>
+
+#include "body.header.include"
+
+<h1>ocplib-wxOCaml </h1>
+
+  <p>ocplib-wxOCaml is a library of bindings to build graphical interfaces
+on top of WxWidgets, a popular toolkit working natively under Linux,
+Windows and Mac OS X. The binding is recent, so not all widgets are
+available, but they are easy to add, as stubs are generated from
+a declarative language close to C++ prototypes. </p>
+
+        <hr />
+
+<p>Some already working examples (see samples/):</p>
+
+<img src="wxOCaml-samples.png">
+
+<div class="span12">
+
+<h3>Ressources</h3>
+
+<table class="table table-striped">
+<tr><td><a href="http://www.github.com/OCamlPro/ocplib-wxOCaml">ocplib-wxOCaml on Github</a></td><td>Latest sources in the official GIT repository</td></tr>
+<tr><td><a href="ocplib-wxOCaml/doc.0.1/index.html">Generated HTML Documentation</a></td><td>Browse wxOCaml modules</td></tr>
+<tr><td><a href="http://www.wxwidgets.org/"> official site</a></td><td>The main site about WxWidgets</td></tr>
+<tr><td><a href="http://docs.wxwidgets.org/trunk/annotated.html">WxWidgets doc</a></td><td>All the classes of WxWidgets</td></tr>
+
+</table>
+
+<br />
+
+<br />
+
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+<p>A binding to wxWidgets</p>
+
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li>OCaml: 'ocp-build' (from GitHub)</li>
+<li>External: WxWidgets 2.8 or 2.9
+compiled with --enable-graphics-context</li>
+</ul><h2>
+<a name="current-status" class="anchor" href="#current-status"><span class="octicon octicon-link"></span></a>Current Status</h2>
+
+<ul>
+<li>Beta version</li>
+<li>See examples in samples/</li>
+</ul><h2>
+<a name="author" class="anchor" href="#author"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<ul>
+<li>Fabrice Le Fessant (INRIA/OCamlPro)</li>
+</ul><h2>
+<a name="how-to-compile" class="anchor" href="#how-to-compile"><span class="octicon octicon-link"></span></a>How to compile</h2>
+
+<pre><code>./configure
+make
+</code></pre>
+
+<p>To run examples:</p>
+
+<p>$ cd samples
+  $ for sample in *; do ../_obuild/$sample/$sample.asm; done</p>
+
+<h2>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<ul>
+<li>
+<p>Look at the code of examples in samples/:</p>
+
+<ul>
+<li>"minimal" is the most simple application</li>
+<li>"two_panels" shows buttons and labels widgets</li>
+<li>"calendar" shows the calendar widgets</li>
+<li>"drawing" shows how to draw on widgets</li>
+<li>"wrapsizer" shows toolbox and options widgetds</li>
+</ul>
+</li>
+<li>
+<p>The global architectures of modules (in wxWidgets/) is:</p>
+
+<ul>
+<li>a module WxClasses with all the (abstract) types</li>
+<li>a module WxWidgets with the constructors (useful to open)</li>
+<li>a module WxDefs with the constants (useful to open too)</li>
+<li>a module per class, with all the methods (including inherited ones)</li>
+<li>a module WxMisc with misc functions</li>
+<li>a function wxMain with the main loop</li>
+</ul>
+</li>
+</ul><h2>
+<a name="how-is-it-done-" class="anchor" href="#how-is-it-done-"><span class="octicon octicon-link"></span></a>How is it done ?</h2>
+
+<p>This project is a complete rewritting of wxOCaml, that does not contain
+ any code from wxHaskell or wxEiffel anymore. It uses a specification of
+ wxWidget API, given in the api/ directory, and generates all the C++ stubs
+ and OCaml modules from that specification, using two specific generators,
+ wxDefsGen (constants in WxDefs, from api/wxDefs.dsc) and wxStubsGen
+ (stubs from api/ *.api and events from api/events.dsc).</p>
+
+<p>Since the API language is very close to C++ prototypes, it is easy to
+add new bindings for missing classes, functions and methods. Check
+the files in api/ for examples.</p>
+
+<h2>
+<a name="how-to-use-" class="anchor" href="#how-to-use-"><span class="octicon octicon-link"></span></a>How to use ?</h2>
+
+<p>Start your code with:</p>
+
+<pre><code> open WxDefs
+ open WxClasses
+ open WxWidgets
+</code></pre>
+
+<p>The "main" of your code is a function "onInit" called from the WxWidgets loop:</p>
+
+<pre><code> let onInit _ = ...
+ let _ = wxMain oninit
+</code></pre>
+
+<p>For every class of WxWidget, we define a module with the same name. The "new"
+constructor is called "create". There can be several "create*" functions
+corresponding to several constructors with different arguments.</p>
+
+<p>Methods are functions in the class module, taking the object as first argument.
+If a method is overloaded for different arguments, then several functions
+can correspond to the different kinds of arguments:
+For example </p>
+
+<pre><code> m_sizer-&gt;add(m_button)
+</code></pre>
+
+<p>will be translated into </p>
+
+<pre><code> WxSizer.addWindow m_size m_button
+</code></pre>
+
+<p>For every class, there are cast functions to translate an object to any
+of its ancestor types. For example, you might need to use:</p>
+
+<pre><code> WxSizer.addWindow (WxBoxSizer.wxSizer m_size) (WxButton.wxWindow m_button)
+</code></pre>
+
+<p>Since methods from ancestors are redefined in children modules, this example
+can be simplified to:</p>
+
+<pre><code> WxBoxSizer.addWindow m_size (WxButton.wxWindow m_button)
+</code></pre>
+
+<p>The WxWidgets module defines some useful helper functions that can be
+used to make the code less verbose. In particular, it defines a WxSizerFlags
+module that can be used to translate WxSizerFlags classes.</p>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ul>
+<li>Translate more examples from WxWidgets</li>
+<li>Bind more classes !</li>
+<li>Bind more methods per class !</li>
+<li>Generate OCaml stubs to call superclass methods (useful when overloading
+virtual methods from OCaml)</li>
+</ul></article>
+  </div>
+
+
+
+</div>
+</div>
+
+#include "body.trailer.include"
+
+</body>
+</html>

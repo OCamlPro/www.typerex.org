@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+#include "head.include"
+   <title>TypeRex: ocp-index</title>
+</head>
+<body>
+
+#include "body.header.include"
+<h1 id="ocpindex">ocp-index</h1>
+<p><code>ocp-index</code> is designed as a simple and light-weight documentation extractor for
+OCaml, for command-line use or integrated in other tools (e.g. for
+completion). It gathers information from <code>.cmi</code> (à la ocamlbrowser) and
+<code>.cmt</code>/<code>cmti</code> files, including structure, location, type, and ocamldoc comments
+when available.</p>
+<p><hr /></p>
+<div class="span12">
+<h3>Ressources</h3>
+<table class="table table-striped">
+  <tr><td><a href="http://www.github.com/OCamlPro/ocp-index">ocp-index on Github</a></td>
+  <td>Latest sources in the official GIT repository</td></tr>
+</table>
+</div>
+<p><br /><br /></p>
+<h2 id="Usage">Usage</h2>
+<p><code>ocp-index COMMAND params OPTIONS</code></p>
+<p>Examples:</p>
+<ul>
+ <li><code>ocp-index type Module.ident</code></li>
+ <li><code>ocp-index complete iden</code></li>
+ <li><code>ocp-index locate Module.ident</code></li>
+ <li><code>ocp-index print Module.ident &lt;format&gt;</code></li>
+</ul>
+
+<p>Options:</p>
+<ul>
+ <li><p><code>-I</code> include dirs / loaded libraries</p>
+ </li>
+ <li><p><code>-O</code> consider given module as open</p>
+ </li>
+ <li><p><code>-F</code> open the given module, not limiting to its exported interface</p>
+ </li>
+ <li><p><code>--context</code> automatically open/bind modules according to the given source file position.</p>
+ </li>
+ <li><p><code>--root</code> specify the root of the current project, for finding cmt files and source lookups. It&#39;s generally safe to let ocp-indent guess.</p>
+ </li>
+ <li><p>output format: <code>--color</code>, <code>--show</code>/<code>--hide</code> to control the kinds of idents to
+ display</p>
+ </li>
+ <li><p><code>--format FORMAT</code>, display using the given format string:</p>
+<table>
+    <tr><th>string<th>contents<th>examples
+    <tr><td><code>%n</code><td>name<td>"map"
+    <tr><td><code>%q</code><td>qualified ident in context<td>"List.map", "map"
+    <tr><td><code>%p</code><td>full ident path<td>"List.map"
+    <tr><td><code>%k</code><td>ident kind<td>"type", "val", "exception", "field(<type>)"...
+    <tr><td><code>%t</code><td>type<td>('a -> 'b) -> 'a list -> 'a list
+    <tr><td><code>%d</code><td>ocamldoc comment<td>"Applies the function..."
+    <tr><td><code>%l</code><td>Implementation location<td>"src/list.ml:83:0"
+    <tr><td><code>%s</code><td>Interface location<td>"src/list.mli:51:0"
+    <tr><td><code>%f</code><td>File of origin<td>"_build/list.cmti"
+    <tr><td><code>%i</code><td>Summary<td>List.map val ('a -> 'b) -> 'a list -> 'b list
+    </table>
+ </li>
+</ul>
+
+<h2 id="Build">Build</h2>
+<pre><code>./configure
+make
+make install</code></pre>
+<p>See below to compile and install the optional <code>ocp-browser</code>.</p>
+<h2 id="Othertools">Other tools</h2>
+<h3 id="Emacsmode">Emacs mode</h3>
+<p>A script <code>ocp-index.el</code> is included under <code>tools/</code>, and can be used together
+with tuareg-mode or ocaml-mode and
+<a href='https://github.com/auto-complete/auto-complete'>auto-complete</a> (packaged as
+<code>auto-complete-el</code> in Debian) to get completions and types in a popup menu.</p>
+<p>You can run the script <code>tools/emacs-setup.sh</code> to get hints on the configuration
+of emacs for ocp-index (it won&#39;t modify any files). Adding the following
+line to your <code>.emacs</code>:</p>
+<pre class='lisp'><code class='lisp'>(add-to-list &#39;load-path &quot;/path/to/ocp-index.el/&quot;)
+(require &#39;ocp-index)</code></pre>
+<p>Will give you:</p>
+<ul>
+ <li><code>C-c TAB</code> to auto-complete (<code>(global-set-key (kbd &quot;KEY&quot;) &#39;auto-complete)</code> to add
+ your own binding)</li>
+ <li><code>C-c t</code> to print the type of the identifier under cursor</li>
+ <li><code>C-c ;</code> to jump to the definition of the identifier under cursor (use <code>C-c C-;</code> to do that in the current window)</li>
+ <li><code>C-c :</code> to jump to the interface of the identifier under cursor (use <code>C-c C-:</code> to do that in the current window)</li>
+ <li><code>C-c /</code> to lookup all occurences of the ident under point in the current project (ocp-grep)</li>
+</ul>
+
+<p>See <code>M-x customize ocp-index</code> for more options.</p>
+<h3 id="Vim">Vim</h3>
+<p>A script <code>ocp-index.vim</code>, contributed by Daisuke Inajima, is available under
+<code>tools</code>. It supports:</p>
+<ul>
+ <li>omni completion</li>
+ <li>type information printing</li>
+ <li>jump to definitions</li>
+</ul>
+
+<p>To use, add vim-ocp-index directory to runtimepath:</p>
+<pre><code>:set runtimepath^=/path/to/ocp-index.vim</code></pre>
+<p>Then create your own <code>after/ftplugin/ocaml.vim</code> to override vim&#39;s
+builtin ocaml settings::</p>
+<pre><code>if exists(&#39;b:did_ftplugin_after&#39;)
+    finish
+endif
+let b:did_ftplugin_after = 1
+
+call ocpindex#init()
+
+nmap &lt;buffer&gt; K         &lt;Plug&gt;(ocpindex-echo-type)
+nmap &lt;buffer&gt; &lt;C-]&gt;     &lt;Plug&gt;(ocpindex-jump)
+nmap &lt;buffer&gt; &lt;C-t&gt;     &lt;Plug&gt;(ocpindex-jump-back)</code></pre>
+<p>You get:</p>
+<ul>
+ <li><code>K</code> Echo type information of the identifier under the cursor</li>
+ <li><code>C-]</code> Push the current position to the jump stack and jump to the definition of the identifier under the cursor</li>
+ <li><code>C-t</code> Pop the previons position from the jump stack and jump back there</li>
+ <li><code>C-x C-o</code> Omni completion</li>
+</ul>
+
+<p>If needed, you can specify ocp-index path explicitly: <code>let g:ocpindex_program = &quot;/path/to/ocp-index&quot;</code></p>
+<h3 id="SublimeText">Sublime Text</h3>
+<p>There is a binding written by Peter Zotov on <a href='https://github.com/whitequark/sublime-ocp-index'>Github</a></p>
+<h3 id="ocpbrowser">ocp-browser</h3>
+<p><img src="ocp-browser.gif" alt="ocp-browser animated screenshot"></img></p>
+<p>A nice terminal interface leveraging the power of ocp-index is included. It
+provides a quick way to browser external and in-project interfaces. Thanks to
+the contribution from <a href='https://gihub.com/Drup'>Gabriel Radanne</a>.</p>
+<p>To compile it, make sure that you have lambda-term installed, e.g. <code>opam install
+lambda-term ocp-index</code>.</p>
+#include "body.trailer.include"
+
+</body>
+</html>

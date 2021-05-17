@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: OCPWin Installation</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+<h1>OCPWin Installation Instructions</h1>
+<p>Download the zip archive of the OCPWin
+  distribution you want. You can now install several versions at the
+  same time.</p>
+<p>We advise to install Git Windows and use the Git Bash utility to
+  get a better environment that cmd/powershell. The instructions below
+  use the syntax of Git Bash, but can easily be translated to
+  cmd/powershell. </p>
+<table width="80%">
+<tr><td>
+<h3>Step 1 : Extract The Content of the Archive</h3>
+<p>Create a directory to store the switches:</p>
+<pre>
+mkdir ~/AppData/Roaming/OCamlPro
+mkdir ~/AppData/Roaming/OCamlPro/OCPWin
+</pre>
+<p>Extract the content of the archive:</p>
+<pre>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+unzip -x ~/ocpwin64-20160113-4.01.0+ocp1-msvc64.zip
+</pre>
+<h3>Step 2: Register the new switch</h3>
+<p>OCPWin uses a utility called <code>ocpwin.exe</code> to manage
+  itself. Use it to register OCPWin in the Windows registry, using
+  the <code>-in</code> argument:</p>
+<pre>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+cd 4.01.0+ocp1-msvc64-20160113
+./ocpwin -in
+</pre>
+<p>This should register this OCPWin distribution location, update the
+external PATH so that the executables from this distribution are used
+  by default. You can prevent PATH modification by adding
+  the <code>-no-switch</code> argument to <code>ocpwin</code>.
+  </p>
+<h3>Step 3: Build Camlp4 for 4.01.0 versions</h3>
+<p>Camlp4 was removed from 4.02.1, but is still available in the
+  4.01.0 distribution of OCPWin. To activate it, use the following
+  command from inside the installation directory:</p>
+<pre>
+./build-camlp4
+</pre>
+<p>It should compile many executables. You can check afterwards
+that <code>camlp4.exe</code> as appeared in the <code>bin</code>
+sub-directory.</p>
+<h3>Step 4: Check that everything is ok</h3>
+<p>Start a new terminal and call <code>ocamlc -v</code> to check
+  that it correctly executes. If yes, you are done !</p>
+<h3>Uninstall Steps: Uninstalling an OCPWIn switch</h3>
+<p>To uninstall, you need to first unregister the switch, and then remove the directory:</p>
+<code>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+cd 4.01.0+ocp1-msvc64-20160113
+./ocpwin -un
+cd ..
+rm -rf 4.01.0+ocp1-msvc64-20160113
+</code>
+<p>Note the <code>-un</code> argument to <code>ocpwin.exe</code> to
+uninstall instead of <code>-in</code> to install.</p>
+</td>
+</tr>
+</table>
+<br />
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>

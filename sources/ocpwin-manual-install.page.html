@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+#include "head.include"
+   <title>TypeRex: OCPWin Installation</title>
+</head>
+<body>
+
+#include "body.header.include"
+
+<h1>OCPWin Installation Instructions</h1>
+
+<p>Download the zip archive of the OCPWin
+  distribution you want. You can now install several versions at the
+  same time.</p>
+
+<p>We advise to install Git Windows and use the Git Bash utility to
+  get a better environment that cmd/powershell. The instructions below
+  use the syntax of Git Bash, but can easily be translated to
+  cmd/powershell. </p>
+
+<table width="80%">
+<tr><td>
+<h3>Step 1 : Extract The Content of the Archive</h3>
+
+<p>Create a directory to store the switches:</p>
+
+<pre>
+mkdir ~/AppData/Roaming/OCamlPro
+mkdir ~/AppData/Roaming/OCamlPro/OCPWin
+</pre>
+
+
+<p>Extract the content of the archive:</p>
+<pre>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+unzip -x ~/ocpwin64-20160113-4.01.0+ocp1-msvc64.zip
+</pre>
+
+<h3>Step 2: Register the new switch</h3>
+
+<p>OCPWin uses a utility called <code>ocpwin.exe</code> to manage
+  itself. Use it to register OCPWin in the Windows registry, using
+  the <code>-in</code> argument:</p>
+
+<pre>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+cd 4.01.0+ocp1-msvc64-20160113
+./ocpwin -in
+</pre>
+
+<p>This should register this OCPWin distribution location, update the
+external PATH so that the executables from this distribution are used
+  by default. You can prevent PATH modification by adding
+  the <code>-no-switch</code> argument to <code>ocpwin</code>.
+  </p>
+
+<h3>Step 3: Build Camlp4 for 4.01.0 versions</h3>
+
+<p>Camlp4 was removed from 4.02.1, but is still available in the
+  4.01.0 distribution of OCPWin. To activate it, use the following
+  command from inside the installation directory:</p>
+
+<pre>
+./build-camlp4
+</pre>
+
+<p>It should compile many executables. You can check afterwards
+that <code>camlp4.exe</code> as appeared in the <code>bin</code>
+sub-directory.</p>
+
+<h3>Step 4: Check that everything is ok</h3>
+
+<p>Start a new terminal and call <code>ocamlc -v</code> to check
+  that it correctly executes. If yes, you are done !</p>
+
+<h3>Uninstall Steps: Uninstalling an OCPWIn switch</h3>
+
+<p>To uninstall, you need to first unregister the switch, and then remove the directory:</p>
+
+<code>
+cd ~/AppData/Roaming/OCamlPro/OCPWin
+cd 4.01.0+ocp1-msvc64-20160113
+./ocpwin -un
+cd ..
+rm -rf 4.01.0+ocp1-msvc64-20160113
+</code>
+
+<p>Note the <code>-un</code> argument to <code>ocpwin.exe</code> to
+uninstall instead of <code>-in</code> to install.</p>
+  
+</td>
+</tr>
+</table>
+
+<br />
+
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+
+</div>
+</div>
+
+#include "body.trailer.include"
+
+</body>
+</html>

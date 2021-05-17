@@ -1,0 +1,59 @@
+</div>
+</div>
+
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+
+   </div>
+  </div>
+
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>

@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: operf-macro</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+                                                   <h1>operf-macro</h1>
+                                                     <hr/>
+<div class="row">
+  <div class="span8">
+    <p class="lead">A macro-benchmarking suite for OCaml</p>
+  </div>
+  <div class="span4">
+    <a class="btn btn-large btn-success btn-block" href="https://github.com/OCamlPro/operf-macro/releases">
+      <i class="icon-arrow-down icon-white"></i> Download
+    </a>
+  </div>
+           </div>
+<hr/>
+<h3>Online Resources</h3>
+<table class="table table-striped">
+  <tr><td><a href="http://www.github.com/OCamlPro/operf-macro">operf-macro on Github</a></td>
+  <td>Latest sources in the official GIT repository</td></tr>
+  <tr><td><a href="http://www.github.com/OCamlPro/opam-bench-repo">OPAM Repo</a></td>
+  <td>An OPAM repository with some macro-benchmarks</td></tr>
+  <tr><td><a href="http://www.github.com/OCamlPro/ocaml-benchs">ocaml-benchs on Github</a></td>
+  <td>The sources of our set of macro-benchmarks</td></tr>
+</table>
+  <hr/>
+<h2>1. Introduction</h2>
+    <a id="user-content-introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<p><em>operf-macro</em> is a (macro)-benchmarking (i.e. whole program) suite for
+OCaml. It provides a framework to define, run, and measure metrics
+from such programs. Those include the elapsed time, the elapsed cycles
+and OCaml GC stats. The aim of <em>macro-benchmarks</em> is to measure the
+performance of the particular compiler that generated it. I can also
+be used to compare different versions of a particular program, or
+comparing the performance of several programs whose functionality is
+equivalent.</p>
+<p>Contrary to <em>micro-benchmarks</em> that are OCaml functions of some
+parameter(s) representing the typical size of the problem (size of an
+array to iterate on, number of iterations of a loop, etc.),
+macro-benchmarks do generally not have a parameter. The other
+difference is that, as said above, they are whole OCaml programs as
+opposed to functions.</p>
+<p>Eventually, the <em>operf-macro</em> framework will serve as an unification
+layer for presenting results from micro-benchmarks as well. Some tools
+are already available, for instance the <code>injector</code> program can import
+inline micro-benchmark results from the Jane Street <em>Core</em> library
+into the operf-macro framework.</p>
+<p>For now, it is however safer to stick with the micro-benchmarking
+tools already available like
+<a href="http://github.com/janestreet/core_bench">core_bench</a> or
+<a href="http://github.com/OCamlPro/operf-micro">operf-micro</a>. An interesting
+read about the <em>core_bench</em> library can be found in the <a href="https://blogs.janestreet.com/core_bench-micro-benchmarking-for-ocaml/">Jane Street
+OCaml
+blog.</a>.</p>
+<p>The other important thing to have in mind from the start is that
+<em>operf-macro</em> is highly integrated into OPAM:</p>
+<ul class="task-list">
+<li>macro-benchmarks are OPAM packages</li>
+<li>compilers are OPAM switches</li>
+</ul>
+<p>Although there are means to bypass this design rule, it is probably
+easier to stick to it. Some pointers will be given in the Usage
+section regarding running independent benchmarks. A method will also
+be given to transform any OCaml installation into an OPAM switch.</p>
+<h2>2. Installation</h2>
+    <a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<p>You need OPAM version 1.2.</p>
+<pre><code>$ opam repo add operf-macro git:
+$ (optionally) opam install core async async_smtp core_bench
+$ opam install operf-macro all-bench
+</code></pre>
+<p>You can install all, some, or no packages listed in the second
+lines. They are optional dependencies to some benchmarks.</p>
+<p>The last line installs <code>all-bench</code>, a meta-package that will always
+depend on all the available benchmarks.</p>
+<h2>3. Basic usage</h2>
+  <a id="user-content-basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<p>The <code>operf-macro</code> benchmark will install an executable named
+<code>operf-macro</code>. This is the single entry-point to the framework and all
+functionality derives from it. It is a CLI program, using
+<a href="http://erratique.ch/software/cmdliner">cmdliner</a>. You can therefore
+easily obtain help on the possible commands directly through it. We
+give here only some tips to begin.</p>
+<h3>3.1. Listing available benchmarks</h3>
+    <a id="user-content-listing-available-benchmarks" class="anchor" href="#listing-available-benchmarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<pre><code>$ operf-macro list "4.01*"
+</code></pre>
+<p>where <code>[glob]*</code> is any number of arguments that will be treated as a
+glob (shell) pattern for a complier version. In this case, all
+installed benchmarks for available compiler switches whose name starts
+by "4.01" will be printed on screen.</p>
+<h3>3.2. Running benchmarks</h3>
+    <a id="user-content-running-benchmarks" class="anchor" href="#running-benchmarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<pre><code>$ operf-macro run
+</code></pre>
+<p>This will run all benchmarks installed in the OPAM switch you are
+currently in, and gather the results in
+<code>.cache/operf/macro/&lt;benchmark&gt;/</code>. You can always interrupt the
+program during execution: successfully executed benchmarks' results
+will be saved. Alternatively, you can use either</p>
+<pre><code>$ operf-macro run [bench_names_glob]*
+$ operf-macro run --skip [bench_names_glob]*
+</code></pre>
+<p>to run only a selection of benchmarks. It will include (resp. exclude)
+the selected benchmarks and only those.</p>
+<h3>3.3. Obtaining results</h3>
+<a id="user-content-obtaining-results" class="anchor" href="#obtaining-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<h4>
+<a id="user-content-raw-data" class="anchor" href="#raw-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Raw data</h4>
+<p><code>operf-macro</code> stores its results in <code>~/.cache/operf/macro</code>. Here you will
+find one directory per benchmark, and inside, one <code>.result</code> file per
+compiler. Inside the file you will find a <em>s-expression</em> that is the
+serialized version of <code>operf-macro</code>'s <code>Result</code> value. This include mostly
+the individual measurements per execution, such as real time, cycles,
+and so on.</p>
+<h4>
+<a id="user-content-summaries" class="anchor" href="#summaries" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summaries</h4>
+<p>Use:</p>
+<pre><code>$ operf-macro summarize
+</code></pre>
+<p>This will print a dump of the database of all <code>operf-macro</code>'s results, as
+an s-expression, on your screen, but before that, it will create a
+<code>.summary</code> file for each <code>.result</code> file (see previous section) found
+in <code>~/.cache/operf/macro</code>, in the same directory.</p>
+<h4>
+<a id="user-content-result-as-csv-files-to-feed-your-favourite-plotting-program" class="anchor" href="#result-as-csv-files-to-feed-your-favourite-plotting-program" aria-hidden="true"><span class="octicon octicon-link"></span></a>Result as <code>.csv</code> files to feed your favourite plotting program</h4>
+<pre><code>$ operf-macro summarize -b csv -t &lt;topic&gt; [-s compiler1,...,compilerN] [benchmark1 ... benchmarkN]
+</code></pre>
+<p>This will print a CSV array of requested benchmarks (or all benchmarks
+if no benchmarks are specified) for the specified switches (or all
+switches if not specified). If you don't specify a topic (<code>-t</code>)
+option, the output will contain <em>n</em> arrays, one per topic, separated
+by a newline.</p>
+<h4>
+<a id="user-content-visualizing-the-results" class="anchor" href="#visualizing-the-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Visualizing the results</h4>
+<p>If you have a recent version of <em>gnuplot</em> compiled with its <em>Qt</em>
+backend installed, you can replace <code>csv</code> by <code>qt</code> in the example above
+(you <strong>need</strong> to specify a topic then). This will launch <em>gnuplot</em> in
+a window and will display the CSV array as a bar chart. You can use
+the <code>-o</code> argument to export the gnuplot <code>.gnu</code> file.</p>
+<h2>4. Advanced Usage</h2>
+  <a id="user-content-advanced-usage-extending-etc" class="anchor" href="#advanced-usage-extending-etc" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<h3>4.1. Writing benchmarks</h3>
+                                                                                                                                   <a id="user-content-writing-benchmarks" class="anchor" href="#writing-benchmarks" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<h4>
+<a id="user-content-bench-file-format" class="anchor" href="#bench-file-format" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<code>.bench</code> file format</h4>
+<p>Benchmark descriptions must be stored in files with the extension
+<code>.bench</code>. The format used is an S-expression matching the internal <code>Benchmark.t</code> type:</p>
+<pre><code> type speed = [`Fast | `Slow | `Slower] with sexp
+  type t = {
+    name: string;
+    descr: string with default("");
+    cmd: string list;
+    cmd_check: string list with default([]);
+    env: string list option with default(None);
+    speed: speed with default(`Fast);
+    timeout: int with default(600);
+    weight: float with default(1.);
+    discard: [`Stdout | `Stderr] list with default([]);
+  } with sexp
+</code></pre>
+<ul class="task-list">
+<li>
+<code>name</code> is the name of the benchmark, and must be unique.</li>
+<li><p><code>description</code> is a free text field.</p></li>
+<li><p><code>cmd</code> is a list containing the absolute path of the benchmark
+executable followed by possible arguments. If arguments are paths,
+the <em>must</em> be absolute paths.</p></li>
+<li><p><code>cmd_check</code> is an optional way to run a program to check if the
+benchmark terminated correctly. The provided string list is the name
+of such a program and its arguments. It will be runned in a shell
+(using <code>Sys.command</code>) and in the same directory where the benchmark
+was run, so that the test program can inspect any files produced by
+the benchmark, if needed.</p></li>
+<li><p><code>env</code> is an optional list of environment parameters. If empty, the
+environment will be the same as the one in effect when <code>operf-macro</code>
+was run. It should be of the form <code>["VAR1=v1";"VAR2=v2"; ...]</code>
+similar to the <code>Unix.execve</code> function.</p></li>
+<li><p><code>speed</code> is a indication about the time of execution of a
+benchmark. Some benchmarks run faster than others. <code>Fast</code> should be
+used when the execution time is less than 0.1s or so in a typical
+machine, <code>Slow</code> when the execution time is of the order of the
+second and <code>Slower</code> otherwise.</p></li>
+<li><p><code>timeout</code> is the maximum running time in seconds. After the timeout
+expires, a running benchmark is cancelled.</p></li>
+<li><p><code>weight</code> is the relative importance of this benchmarks compared to
+others. The default is <code>1</code>, for an average importance. This
+parameter is used when computing global performance indices for a
+compiler, including several or all benchmarks.</p></li>
+<li><p><code>discard</code> can be specified to indicate to <code>operf-macro</code> that it should
+not save the output of the program. Usually, the output of the
+program is stored in the <code>.result</code> files for ulterior examination.</p></li>
+</ul>
+<h3>4.2. Running Your New Benchmark</h3>
+<h5>operf-macro</h5>
+<p>Use:</p>
+<pre><code>$ operf-macro perf /path/to/exe arg1 .. argn --batch
+</code></pre>
+<p>This will perform a benchmark of the program specified in the
+commandline and print the result as an s-expression in stdout. This
+s-expression include an inner s-expression describing the benchmark
+source, and this is your benchmark description. Write this in a
+<code>.bench</code> file.</p>
+<h5>opam</h5>
+<p>Another way is to create an opam package and inform operf-macro
+  about it. A good idea is to look at the packages
+  in <a href="https://github.com/OCamlPro/opam-bench-repo"> our
+  benchmarks repo </a> to have an easier time packaging your
+  benchmark.</p>
+<ul>
+<li> Your package name should end with <code>-bench</code> </li>
+<li> Your opam file should have benchmark as a tag </li>
+<li> Your <code> .benchmark </code> can be a <code>
+    .benchmark.in </code>. This will allow you to use some predefined
+    opam variable as <code> %{bin}% </code>. In that case you need to
+    use <code> substs </code> in your opam file</li>
+</ul>
+<h3>5. Time information</h3>
+<table style="width:100%; margin-left:10%; margin-right:10%">
+  <tr style="border:1px solid black">
+    <th>Name</th>
+    <th>Occurences</th>
+    <th>Expected Time (secondes)</th>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>bdd</td>
+    <td>16</td>
+    <td>9</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>kb</td>
+    <td>6</td>
+    <td>6</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>sequence</td>
+    <td>414</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>sequence-cps</td>
+    <td>168</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>async_rpc</td>
+    <td>34</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>coq</td>
+    <td>2</td>
+    <td>760</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>coq-pwith</td>
+    <td>13</td>
+    <td>160</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>g2pp</td>
+    <td>6</td>
+    <td>255</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>jsontrip-actionLabel</td>
+    <td>250</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>jsontrip-sample</td>
+    <td>7</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>gdump-sample</td>
+    <td>44</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>gdump-actionLabel</td>
+    <td>217</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>async-echo</td>
+    <td>15</td>
+    <td>10</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>core-seq</td>
+    <td>304</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>core-cps</td>
+    <td>235</td>
+    <td>6</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>patdiff</td>
+    <td>40</td>
+    <td>32</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>alt-ergo</td>
+    <td>5</td>
+    <td>702</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>cohttp-async</td>
+    <td>54</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>cohttp-lwt</td>
+    <td>307</td>
+    <td>&lt;1</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>js-of-ocaml</td>
+    <td>8</td>
+    <td>149</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>sauvola</td>
+    <td>5</td>
+    <td>72</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>valet-lwt</td>
+    <td>5</td>
+    <td>130</td>
+  </tr>
+  <tr style="border:1px solid black">
+    <td>valet-async</td>
+    <td>6</td>
+    <td>159</td>
+  </tr>
+</table>
+<h2>6. FAQ</h2>
+                              <a id="user-content-faq" class="anchor" href="#faq" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<h4>
+<a id="user-content-i-want-operf-macro-to-measure-gc-stats-for-my-program" class="anchor" href="#i-want-operf-macro-to-measure-gc-stats-for-my-program" aria-hidden="true"><span class="octicon octicon-link"></span></a>I want <code>operf-macro</code> to measure GC stats for my program!</h4>
+<p>Please add at the end of your benchmark:</p>
+<pre><code> try
+    let fn = Sys.getenv "OCAML_GC_STATS" in
+    let oc = open_out fn in
+    Gc.print_stat oc
+  with _ -&gt; ()
+</code></pre>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>

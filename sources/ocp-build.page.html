@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+#include "head.include"
+   <title>TypeRex: ocp-build</title>
+</head>
+<body>
+
+#include "body.header.include"
+
+<h1>ocp-build, a build system for OCaml applications</h1>
+
+  <p>ocp-build is a build system for OCaml application, based on simple descriptions of <em>packages</em>. ocp-build combines the descriptions of packages, and optimize the parallel compilation of files depending on the number of cores and the automatically-infered dependencies between source files. </p>
+
+        <hr />
+
+<div class="span12">
+
+<h3>Resources</h3>
+
+<table class="table table-striped">
+<tr><td><a href="http://www.typerex.org/pub/ocp-build/">Sources</a></td><td>Source archives (last release is 1.99.9-beta since March 11, 2015)</td></tr>
+<tr><td><a href="http://github.com/OCamlPro/ocp-build/blob/master/docs/user-manual/user-manual.pdf?raw=true">User Manual</a></td><td>A preliminary user manual</td></tr>
+</table>
+
+<br />
+
+<p>An example of description file for ocp-build (with the .ocp extension):</p>
+
+<pre>
+begin library "ocplib-system"
+  files = [ "file.ml" "process.ml" "stubs.c" ]
+  requires = [ "unix" ]
+end
+
+begin program "file-checker"
+files = [ "checkFiles.ml" "checkLexer.mll" "checkParser.mly" "checkMain.ml" ]
+requires = [ "ocplib-system" ]
+end
+</pre>
+
+<br />
+<p>Invoking ocp-build is as follows (use -help to get more information):</p>
+
+<table class="table table-striped">
+<tr><td>ocp-build root</td><td>Set project root directory</td></tr>
+  <tr><td>ocp-build configure </td><td>  Configure project options</td></tr>
+  <tr><td>ocp-build project </td><td>  Query project information</td></tr>
+  <tr><td>ocp-build build  </td><td>  Build project</td></tr>
+  <tr><td>ocp-build install </td><td>  Install packages</td></tr>
+  <tr><td>ocp-build test  </td><td>  Build and run package tests</td></tr>
+  <tr><td>ocp-build clean  </td><td>  Clean build artefacts</td></tr>
+  <tr><td>ocp-build query  </td><td>  Query environment information</td></tr>
+  <tr><td>ocp-build uninstall </td><td> Uninstall packages</td></tr>
+</table>
+
+<br />
+
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+
+</div>
+</div>
+
+#include "body.trailer.include"
+
+</body>
+</html>

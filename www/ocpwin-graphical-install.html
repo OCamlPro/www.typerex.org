@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: OCPWin Installation</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+<h1>OCPWin Installation Instructions</h1>
+<p>After downloading the OCPWin installer for your platform, follow these instructions to install OCPWin on your system. </p>
+<table width="80%">
+<tr><td>
+<h3>Step 1 : Start the Installer</h3>
+<p>Click on the installer. Windows should warn you about the fact that it cannot verify the file. Just click on <code>Run</code> to continue.</p>
+<a href="images/ocpwin-install-step1.png" ><img src="images/ocpwin-install-step1.png" /></a>
+<h3>Step 2: Verify the Installer Platform</h3>
+<p>Verify that you are running the installer for your platform: OCPWin32 can run on both Windows 32 and 64 bits, but OCPWIN64 is only for Windows 64 bits (now, very common). Click on <code>Next</code> to continue.</p>
+<a href="images/ocpwin-install-step2.png" ><img src="images/ocpwin-install-step2.png" /></a>
+<h3>Step 3: Choose the Start Menu Folder</h3>
+<p>Choose the Start Menu folder where OCPWin should install its links. Usually, you do not need
+to modify this item.</p>
+<a href="images/ocpwin-install-step3.png" ><img src="images/ocpwin-install-step3.png" /></a>
+<h3>Step 4: Read the License Agreement</h3>
+<p>OCPWin license agreement allows you to build application for any purpose with it, with the only restriction that you should not redistribute parts of the compiler itself. If you are looking for a less restrictive license, or an open-source license, you should contract with OCamlPro directly.
+Click on <code>I agree</code> if you agree with that license.</p>
+<a href="images/ocpwin-install-step4.png" ><img src="images/ocpwin-install-step4.png" /></a>
+<h3>Step 5: Choose the Installation Directory</h3>
+<p>You can choose where to install OCPWin. Normally, it does not matter much, as the installer
+will automatically add the <code>bin</code> sub-directory to your PATH, and you will not need
+    to configure more your system. You should probably also choose a directory name that does
+not contain spaces, as they might, sometimes, interfere with some programs.</p>
+<a href="images/ocpwin-install-step5.png" ><img src="images/ocpwin-install-step5.png" /></a>
+<h3>Step 6: Watch the Installation</h3>
+<p>The installer will now copy the files in the directory you chose, run post-install
+scripts and configure the system to have OCaml in the PATH.</p>
+<a href="images/ocpwin-install-step6.png" ><img src="images/ocpwin-install-step6.png" /></a>
+<h3>Step 7: Finish the installation</h3>
+<p>Once it is finished, you can click on <code>Finish</code> to exit the installer.</p>
+<a href="images/ocpwin-install-step7.png" ><img src="images/ocpwin-install-step7.png" /></a>
+<h3>Step 8: Start a Terminal</h3>
+<p>In the Start Menu, type <code>cmd</code> to launch a terminal
+(you should avoid using Cygwin with OCPWin as Mingw installed by OCPWin might
+interfere with Cygwin version).</p>
+<a href="images/ocpwin-install-step8.png" ><img src="images/ocpwin-install-step8.png" /></a>
+<h3>Step 9: Check your Configuration</h3>
+<p>In the terminal, you can try a few OCaml commands, such as <code>ocamlc -v</code>. Beware that, although <code>ocamlbuild</code> is installed, it does not work correctly outside of Cygwin.</p>
+<a href="images/ocpwin-install-step9.png" ><img src="images/ocpwin-install-step9.png" /></a>
+<h3>You are done !</h3>
+<table width="100%">
+<tr><td width="30%">
+<p>You can now enjoy using OCaml with your preferred editor.</p>
+<p>For beginners, we advise you to start with <a href="ocaml-top.html">OCaml-Top</a>.</p>
+</td><td>
+<a href="ocaml-top.html"><img src="ocaml-top-resources/screenshot_1.png" width="500"/></a>
+</td></tr></table>
+</td>
+</tr>
+</table>
+<br />
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>

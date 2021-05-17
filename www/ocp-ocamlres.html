@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: ocp-ocamlres &amp; ocplib-ocamlres</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+<h1>ocp-ocamlres</h1>
+<p>A tool <code>ocp-ocamlres</code> to embed files and directories inside an OCaml
+executables, with a companion library <code>ocplib-ocamlres</code> to manipulate
+them at run-time.</p>
+<hr/>
+<div class="span12">
+<h3>Ressources</h3>
+<table class="table table-striped">
+<tr><td><a href="http://www.github.com/OCamlPro/ocp-ocamlres">ocp-ocamlres on Github</a></td><td>Latest sources in the official GIT repository</td></tr>
+</table>
+</div>
+<br />
+<h2>Features:</h2>
+<ul>
+<li>Multi-format architecture enabling to embed the resource files in
+several ways.
+<ul>
+<li>The default one named "ocamlres" is to produce an OCaml tree
+whose nodes describe the original file system structure and
+leaves are string containing the raw contents of files. This
+tree can be manipulated through an auxiliary library distributed
+with ocp-ocamlres.</li>
+<li>Another "ocaml" one is to project directories to modules and
+files to let bindings. This has the side effect of tranforming
+dynamic "file not found" errors to static "unbound identifier"
+ones.</li>
+</ul>
+</li>
+<li>Subformats can be defined to pre-parse certain resource files and
+output their OCaml representation instead of their raw
+contents. This features transforms dynamic "parse errors" into
+static ones. It also simplifies the initialisation step of the
+program.</li>
+<li>Pluggable architecture (dynamically by using cmxs or by building a
+specialized tool with a specific set of formats and subformats).</li>
+</ul><h2>Simple example:</h2>
+<p>Note: This example is illustrated through command line calls of the
+tool, but the same could be achieved in OCaml via library calls.</p>
+<p>Suppose you have a folder <code>"res"</code> containing the simple following hierarchy:</p>
+<ul>
+<li>
+<code>a/x</code> with a file <code>test.int</code>
+</li>
+<li>
+<code>a/y</code> with two files <code>test.int</code> and <code>tast.int</code>
+</li>
+<li>
+<code>b/x</code> empty</li>
+<li>
+<code>b/y</code> with two files <code>read.txt</code> and <code>bytes.bin</code>
+</li>
+</ul><p>You want to embed these files in you application, so you run
+<code>ocp-ocamlres res -o appres.ml</code> to obtain an OCaml value <code>Appres.root</code>
+of type <code>string OCamlRes.Res.root</code>:</p>
+<pre><code>let root = OCamlRes.Res.([
+  Dir ("a", [
+    Dir ("x", [ File ("test.int", "1234")]) ;
+    Dir ("y", [
+      File ("tast.int", "9999") ;
+      File ("test.int", "5678")])]) ;
+  Dir ("b", [
+    Dir ("x", [
+      File ("bytes.bin", "\x01\x02\x03\x04\x05\x06") ;
+      File ("read.txt", "this is\na text\nfile\n")])])
+])
+</code></pre>
+<p>Alternatively, you can also run <code>ocp-ocamlres -format ocaml res -o res.ml</code>
+ to select another output format and obtain:</p>
+<pre><code>module A = struct
+  module X = struct let test_int = "1234" end
+  module Y = struct
+    let tast_int = "9999"
+    let test_int = "5678"
+  end
+end
+module B = struct
+  module X = struct
+    let bytes_bin = "\x01\x02\x03\x04\x05\x06"
+    let read_txt = "this is\na text\nfile\n"
+  end
+end
+</code></pre>
+<p>A more advanced feature is resource pre-parsing via subformats. While
+formats handle the generation of the main tree structure, subfornats
+handle the pretty printing of files. The tool has an option to select
+files by extension for applying a specific subformat to them. For
+instance, we can ask to treat the <code>.int</code> files with the <code>int</code>
+subformat and the <code>.txt</code> files with the <code>lines</code> subformat
+<code>ocp-ocamlres -format ocaml res -o res.ml -subformat int int
+-subformat txt lines</code></p>
+<pre><code>module A = struct
+  module Y = struct let tast_int = 9999 let test_int = 5678 end
+  module X = struct let test_int = 1234 end
+end
+module B = struct
+  module Y = struct
+    let bytes_bin = "\x01\x02\x03\x04\x05\x06"
+    let read_txt = [ "this is" ; "a text" ; "file" ]
+  end
+end
+</code></pre>
+<p>Mixing this feature with the <code>ocamlres</code> format is a bit trickier.
+Since the <code>'a root</code> type must be homogeneous, just using different
+subformat for pretty printing different leaves would produce untypable
+code. To solve this, the <code>ocamlres</code> format has two ways of working:</p>
+<ol>
+<li>If all files are treated by the same subformat, the type
+ parameter will simply be the intrinsic one of the subformat. For
+ instance, there is a <code>Lines</code> subformat which turns text files
+ into list of lines, and if applied to all nodes of the tree,
+ results in a tree of type <code>string list root</code>.</li>
+<li>Otherwise, the leaves are boxed using constructors of a generated
+ type unifying all occuring subformats (or in option polymorphic
+ variants), as in the following output of the command
+ <code>ocp-ocamlres -format ocamlres res -o res.ml -subformat int int
+ -subformat txt lines -no-variants</code>
+</li>
+</ol><pre><code>type content =
+  | Int of int
+  | Lines of string list
+  | Raw of string
+let root = OCamlRes.Res.([
+  Dir ("a", [
+    Dir ("y", [
+      File ("tast.int", Int 9999) ;
+      File ("test.int", Int 5678)]) ;
+    Dir ("x", [ File ("test.int", Int 1234)])]) ;
+  Dir ("b", [
+    Dir ("y", [
+      File ("bytes.bin", Raw "\x01\x02\x03\x04\x05\x06") ;
+      File ("read.txt", Lines [ "this is" ; "a text" ; "file" ])])])
+])
+</code></pre>
+<h2>Some use-cases:</h2>
+<ul>
+<li>Maurice wants to distribute a single executable for portability so
+he includes its config files.</li>
+<li>Jeanine is an indie game developper and she uses the tool to be
+sure at compile time that she never forgets some asset. She uses
+the "ocaml" backend and then simple OCaml identifiers to identify her
+resources.</li>
+<li>Henry wants to build a single-binary installer, so he includes all
+the files as an ocamlres tree using the "ocamlres", format. Then he
+links the generated module with the ocamlres lib, and calls the
+"files" output backend at run-time to extract the files.</li>
+<li>Veronica is a Web developper, and she does not like XHRs, so she
+embeds some of her resources directly inside her code.</li>
+</ul>
+<h2>Help page:</h2>
+<pre><code>Usage: ocp-ocamlres [ -format &lt;format&gt; ] [ options ] files...
+  -plug "plugin.cmxs" load a plug-in
+  -list print the list of available formats
+  -list-subformats lists available subformats
+  -format "format" define the output format (defaults to "static")
+  -ext "ext" only scan files ending with ".ext" (can be called more than once)
+  -keep-empty-dirs keep empty dirs in scanned files
+Available formats:
+  * files: reproduces the original files
+    -output-dir "dir" set the base output directory (defaults to ".")
+  * ocaml: produces static ocaml bindings (modules for dirs, values for files)
+    -width set the maximum chars per line of generated code
+    -subformat "ext" "subformat" preprocess files ending by "ext" as "suformat"
+    -o "file name" print in a file instead of stdout
+  * ocamlres: produces the OCaml source representation of the OCamlRes tree
+    -width set the maximum chars per line of generated code
+    -subformat "ext" "subformat" preprocess files ending by "ext" as "suformat"
+    -o "file name" print in a file instead of stdout
+    -no-variants use a plain sum type instead of polymorphic variants
+Available subformats (for compatible formats):
+  * int: for files containing only an integer
+  * lines: splits the input into lines
+  * raw: raw file contents as a string
+</code></pre>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>

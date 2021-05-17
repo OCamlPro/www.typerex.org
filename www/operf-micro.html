@@ -1,0 +1,454 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: operf-micro</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+                                                   <h1>operf-micro</h1>
+                                                             <hr/>
+<div class="row">
+  <div class="span8">
+    <p><code>operf-micro</code> is a small tool coming with a set of micro benchmarks for the OCaml compiler. It provides a minimal framework to compare the performances of different versions of the compiler. Bigger benchmarks are also available using <a href="operf-macro.html">another tool, <code>operf-macro</code></a>. </p>
+  </div>
+  <div class="span4">
+    <a class="btn btn-large btn-success btn-block" href="https://github.com/OCamlPro/operf-micro/releases">
+      <i class="icon-arrow-down icon-white"></i> Download
+    </a>
+  </div>
+</div>
+        <hr/>
+<h3>Online Resources</h3>
+<table class="table table-striped">
+  <tr><td><a href="http://www.github.com/OCamlPro/operf-micro">operf-micro on Github</a></td>
+  <td>Latest sources in the official GIT repository</td></tr>
+</table>
+  <hr/>
+<h2>1. Installation</h2>
+<a id="user-content-build-and-install" class="anchor" href="#build-and-install" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+                     <table width="100%"><tr>
+      <td width="45%">
+        <h3>1.1 Install using OPAM</h3>
+        </td><td width="10%"></td>
+        <td width="45%">
+          <h3>1.2Build from Sources</h3>
+</td>
+          </tr><tr><td>
+        <p><code>operf-micro</code> is available in the official OPAM repository as a self-contained package. <code>operf-micro</code> can be installed in any switch, even to benchmark on OCaml compiler in another switch.</p>
+<pre><code>
+opam install operf-micro
+</code></pre>
+  </td>
+<td></td>
+                       <td width="50%">
+<p>If you download the sources from Github, you can use the following
+instructions to build and install <code>operf-micro</code>.</p>
+<ul class="task-list">
+<li>./configure (--prefix)</li>
+<li>Build:</li>
+</ul>
+<pre><code>make
+</code></pre>
+<ul class="task-list">
+<li>Install:</li>
+</ul>
+<pre><code>(sudo) make install
+</code></pre>
+      </td>
+  </tr>
+  </table>
+<h2>2. Basic Usage</h2>
+      <a id="user-content-run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<p>If you are in OCaml sources, just use:</p>
+<pre><code>operf-micro init SomeNameForTheseTests
+</code></pre>
+<p>otherwise, create a directory for the tests and provide the bin/ directory where OCaml is installed:</p>
+<pre><code>operf-micro init --bin-dir $HOME/.opam/4.01.0/bin/ TestsOn-4.01.0
+</code></pre>
+<p>This command will create a sub-directory <code>.operf</code> in the local directory when benchmarks sources are copied, and will later be built and executed.</p>
+<p>Now, we can build the tests:</p>
+<pre><code>operf-micro build
+</code></pre>
+<p>We can list the available tests:</p>
+<pre><code>operf-micro list
+</code></pre>
+<p>We can run a few tests, for example the ones in "list":</p>
+<pre><code>operf-micro run list
+</code></pre>
+<p><code>operf-micro</code> runs the benchmarks several times, until the variance is low enough for the results to be significant.</p>
+<p>Now, we can display the results:</p>
+<pre><code>operf-micro results TestsOn-4.01.0
+</code></pre>
+<p>and we get the output:</p>
+<pre><code>TestsOn-4.01.0 2015-02-04_11-45-24:
+  list:
+    group fold_left add
+      tail_rec: 26.18
+      while: 29.94
+      while_exn: 120.04
+    group fold_left add_float
+      tail_rec: 26.14
+      while: 29.82
+      while_exn: 118.87
+    group interval
+      direct: 22.58
+      tail_rec: 22.03
+      tail_rec_with_closure: 24.59
+    group map succ
+      direct: 25.76
+      closure: 29.72
+      tail_rec: 36.34
+    group rev
+      rec: 21.32
+      rev_while: 23.07
+    group rev_map succ
+      rev_map_tail_rec succ: 25.19
+      rev_map_while succ: 28.13
+</code></pre>
+<p>If we have done the same for another version of OCaml, for example TestsOn-4.02.0, we can compare them with:</p>
+<pre><code>operf-micro compare TestsOn-4.01.0 TestsOn-4.02.0
+</code></pre>
+<p>Or you could plot the data of the bench for the runs:</p>
+<pre><code>operf-micro plot list TestsOn-4.01.0
+    TestsOn-4.02.0</code></pre>
+<p>This is the kind of results you will get :</p>
+<img src="images/operf-micro-gnuplot-example.png" alt="fibo-gnuplot-example"/>
+<h2>3. Advanced usage</h2>
+<p> This is an advanced description of every command you can run in
+  operf-micro.</p>
+<h3>3.1 init</h3>
+<p>This command allow you to initialized your run of benchmarks.</p>
+<pre>
+Usage: operf-micro init [&lt;args&gt;] &lt;name&gt;
+initialize the .operf directory.
+</pre>
+<ul>
+<li>--bin-dir: allows you to give the path to the bin/ directory
+  where OCaml is installed. You can choose to run operf-micro
+  directly in this directory and ommit this argument</li>
+<li>-I path: you can add a path to a directory containing new benchmarks</li>
+<li>name: you need to give a name to your run. This will later be
+  useful to compare different runs</li>
+</ul>
+<p>
+This will create a sub-directory .operf in the local directory where
+different files will be copied or created :
+<ul>
+<li>a config file will be created. This file contains the name and
+  the OCaml directory</li>
+<li>some base files will be copied</li>
+<li>the default benchmarks will be copied</li>
+<li>the benchmarks added with -I and the benchmarks in
+  <code>$(HOME)/.operf/micro/benchmarks/</code> will be copied</li>
+</ul>
+</p>
+<h3>3.2 build</h3>
+<p>Once you have initialized your .operf directory is ready to be
+  built.</p>
+<pre>
+Usage: operf-micro build
+  --ccopt s add ocamlopt argument
+</pre>
+<p>
+This command will build the benchmarks in your .operf directory. There
+are few steps :
+<ul>
+<li>recover the name and OCaml bin directory from the config file</li>
+<li>load the different paths in the context (ocamlopt, ocamlrun,...)</li>
+<li>compile the operf sources files </li>
+<li>compile each bench</li>
+</ul>
+</p>
+<h3>3.3 check</h3>
+<pre>
+Usage: operf-micro check [&gt;paths&lt;]
+Typecheck benchmarks
+</pre>
+<p>This option is here to help create your own benchmark. It will run
+  the init and build phase on the benchmarks given whithout taking
+  care of the default benchmarks.</p>
+<h3>3.4 list</h3>
+<p>This will list every benchmarks that have been copied during the
+  initialization phase.</p>
+<p>If the benchmark have been built then operf-micro will print every
+  functions registered.</p>
+<h3>3.5 run</h3>
+<pre>
+Usage: operf-micro run
+</pre>
+<ul>
+<li>--time-quota t: limit the time</li>
+<li>--different-values n: number of different values on which functions are evaluated</li>
+<li>--long: allow running long test</li>
+<li>--longer: allow running longer test</li>
+<li>--output: directory where .result files will be recorded</li>
+</ul>
+<p>You can give a name to run the benchmark of your choice or all
+  benchmark by omitting a name.</p>
+<p>This will prepare the command to run the benchmark then run it and
+  save different informations in a temporary file (number of runs, number
+  of cycles, gc stats...). This temporary file will then be used to
+  generate a .result file. This is the file we will read when
+  printing the results.</p>
+<h3>3.6 clean</h3>
+<p>This command will remove the .operf directory. You will need to
+  start from the initialization phase to run benchmarks.</p>
+<h3>3.7 results</h3>
+<p>This command will print the results of your runs.</p>
+<pre>
+Usage: operf-micro results [&lt;names&gt;]
+if no name provided, list recorded results, otherwise print last results
+  --selected s run benchmark s. All are run if none is specified
+  --more print min,max and standard error infos
+</pre>
+<p>If you don't give any name, you will be displayed the list of your
+  runs by their name with the date for each test you made and the
+  name of the function you tested. These informations are retrieved
+  from the <code>$(HOME)/.operf/micro/</code> directory.</p>
+<p>If you give the name of a run, we retrieve the informations in the
+  corresponding .result file and display the function name and a
+  score.</p>
+<p>You can use the option more to display some additional informations.</p>
+<h3>3.8 compare</h3>
+<pre>
+Usage: operf-micro compare [&lt;names&gt;]
+comparisons between runs
+   --std-error : print the standard error for each bench
+</pre>
+<p>This command will compare the selected runs. If no runs are
+  given, operf-micro will display all the runs.</p>
+<p>All the results are gathered and we will compare the score of a
+  bench tested in several different runs.</p>
+<pre>
+operf-micro compare test1 test2
+    test1 test2
+fft 1.00 1.00
+fib 1.06 0.97
+</pre>
+<p>Here we have two runs: test1 and test2. Both of them have tested the
+  fft and the fibonnaci benchmarks. We compare the score for each
+  benchmark.</p>
+<p>You can use the option std-error to display some additional informations.</p>
+<h3>3.9 plot</h3>
+<pre>
+Usage: operf-micro plot bench_name&lt;.group_name&gt; [&lt;run_name&gt;]
+if no runs name is provided, plot for all run, otherwise plot the data on the given runs
+  --with-fun plot each functions of the bench
+  --png choose png output
+</pre>
+<p>This command will plot the data of the selected bench for the given
+  runs (or all runs). By default operf-micro will plot all the functions of a
+  group in one graph. Since you can have a large number of functions
+  and this can make a graph hard to read, you can choose to plot a function
+  in one graph. You can also select one group to be plotted instead of
+  all the groups of a bench.</p>
+<p>Operf-micro offers the possibility to generate png of the graphs.</p>
+<h3>3.10 do all</h3>
+<p> This command will do every steps from initialization to
+  displaying the results of the run.</p>
+<p> You can specify any paramaters that you would if you would have
+  called each step one by one.</p>
+<h2>4. Write your own bench</h2>
+<a id="user-content-run" class="anchor" href="#run"
+                           aria-hidden="true"><span class="octicon octicon-link"></span></a>
+<h3>4.1 Writing your bench</h3>
+<p>We are going to take
+  the <a href="https://github.com/OCamlPro/operf-micro/blob/master/benchmarks/fibonnaci/benchmark.ml">fibonacci
+  benchmark</a> as an example to explain
+  how to write a bench for operf-micro.</p>
+<p>A benchmark is a directory which contains
+  a <strong>benchmark.ml</strong> file or serveral ml files and a
+  <strong>benchmark.build</strong> file. The .build file describes how
+  to build the benchmark.</p>
+<p>The file benchmark.build should have the following format :
+<pre>{ files: ["file1.ml", "file2.ml"],
+  link: ["lib1","lib2"] }
+</pre>
+</p>
+<p>Our example just contains a benchmark.ml</p>
+<br />
+<pre>
+let rec fib n =
+  if n < 2 then 1 else fib(n-1) + fib(n-2)
+</pre>
+<p> This is the function that our bench is going to run.</p>
+<pre>
+let results =
+  [|1; 1; 2; 3; 5; 8; 13; 21; 34; 55; 89; 144; 233; 377; 610; 987; 1597;
+    2584; 4181; 6765; 10946; 17711; 28657; 46368; 75025; 121393; 196418;
+    317811; 514229; 832040; 1346269; 2178309; 3524578; 5702887; 9227465;
+    14930352; 24157817; 39088169; 63245986; 102334155; 165580141; 267914296;
+    433494437; 701408733|]
+</pre>
+<p> This is an array containing the 44 first fibonnaci
+  numbers. Later operf-micro will use this to check that our function is
+  correct.</p>
+<pre>
+let prepare i = i
+</pre>
+<p> This function allows to generate our argument. Here we just need
+  an integer so the function is the identity.</p>
+<p><oblique>You can check for a more interesting use in <a href="">bigarray_rev bench</a></oblique></p>
+<pre>
+let run i = i, fib i
+</pre>
+<p> This is the function that will run our bench. Given an argument
+  it will return the argument and the result of the run on that argument. </p>
+<pre>
+let check (i, n) =
+  if n = results.(i)
+  then Micro_bench_types.Ok
+  else Micro_bench_types.Error
+        ("fib " ^ (string_of_int i)
+        ^ " returned " ^ (string_of_int n)
+        ^ " instead of " ^ (string_of_int results.(i)))
+</pre>
+<p>This is the function that will test if our bench is correct. It
+  checks the output against the results array. If it doesn't match we
+  give a message explaining where it went wrong.</p>
+<pre>
+let functions =
+  [ "fib", Micro_bench_types.Int (run, prepare, check,
+                [ Micro_bench_types.Range (0, 28), Micro_bench_types.Short;
+                  Micro_bench_types.Range (29, 40), Micro_bench_types.Long;
+                  Micro_bench_types.Range (40, Array.length results - 1), Micro_bench_types.Longer ])
+  ]
+</pre>
+<p> This is where we assemble the part to make our benchmark. A
+  benchmark is :</p>
+<ul class="task-list">
+  <li> a name</li>
+  <li> your actual bench constructed with a structure including:
+    <ul class="task-list">
+      <li> a function to run your bench <code>run</code></li>
+      <li> a function to prepare your argument <code>prepare</code></li>
+      <li> a function to check your bench against the expected output <code>check</code></li>
+      <li> a list of <code>range * cost</code> to estimate the run time given
+ a paramater range</li>
+    </ul>
+  </li>
+</ul>
+<pre>
+let () = Micro_bench_types.add functions
+</pre>
+<p> You will need to use the add function in your bench. This
+  function register our bench so we can later executed it.</p>
+<br />
+<p>A good way to get started is to take a look at our benchmarks
+  in <strong><a href="https://github.com/OCamlPro/operf-micro/blob/master/benchmarks">operf-micro/benchmarks</a></strong>
+  and
+  file <strong><a href="https://github.com/OCamlPro/operf-micro/blob/master/micro_bench_types.mli">micro_bench_types.mli</a></strong>
+  which contains some types and functions to help you create your benchmarks.</p>
+<h3>4.2 Add your bench</h3>
+<p> Operf-micro offers three ways to add your bench :<p>
+<ul class="task-list">
+  <li> Add your bench to the <strong>benchmarks dir</strong> in operf-micro
+  sources. </li>
+  <p> You will need to recompile operf-micro. When using
+    <code> operf-micro init</code> your bench will be copied and
+    prepared to be executed. </p>
+  <li> Add your bench to <code>$(HOME)/.operf/micro/benchmarks/</code></li>
+  <p> You may need to create this directory. Operf-micro scan this
+    directory everytime you use <code>operf-micro init</code>.</p>
+  <li> When initializing you can use the option -I dir to add your
+    bench. </li>
+  <p><code> operf-micro init -I mybenchdir</code> </p>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+#include "head.include"
+   <title>TypeRex: OCaml-Top</title>
+</head>
+<body>
+
+#include "body.header.include"
+#include "define.h"
+
+<h1>OCaml-Top</h1>
+
+<div class="row">
+  <div class="span8">
+    <p class="lead">The OCaml interactive editor for education</p>
+  </div>
+  <div class="span4">
+    <a class="btn btn-large btn-success btn-block" href="https://github.com/OCamlPro/ocaml-top/releases">
+      <i class="icon-arrow-down icon-white"></i> Download OCAMLTOP
+    </a>
+  </div>
+</div>
+
+<div style="height: 8ex;"></div>
+
+<div class="span12">
+
+<img src="ocaml-top-resources/screenshot_1.png" alt="ocaml-top screenshot"/>
+
+<p class="text-info text-center">OCaml-Top is designed for beginners and
+students, and specially tailored for exercises, practicals and simple
+projects</p>
+
+<hr />
+
+<h2>Features</h2>
+
+<h5><i class="icon-arrow-right"></i> Syntax coloring</h5>
+<h5><i class="icon-arrow-right"></i> Automatic, state-of-the-art code
+  indentation</h5>
+<div class="row">
+  <div class="span6">
+    <p class="text-center">
+      <img src="ocaml-top-resources/sc_structure.png"
+           alt="structure screenshot" class="img-rounded" />
+    </p>
+    <p class="text-center">Makes understanding the program structure easier</p>
+  </div>
+  <div class="span6">
+    <p class="text-center">
+      <img src="ocaml-top-resources/sc_mistake.png"
+           alt="easy mistake screenshot" class="img-rounded" />
+    </p>
+    <p class="text-center">Naturally avoids most beginner's syntactic
+    mistakes</p>
+  </div>
+</div>
+<h5><i class="icon-arrow-right"></i> Intuitive code execution</h5>
+<div class="row">
+  <div class="span6">
+    <p class="text-center">
+      <img src="ocaml-top-resources/sc_run.png"
+           alt="Play button screenshot" class="img-rounded" />
+    </p>
+    <p class="text-center">"Run" button runs just what you would expect: the
+      expression under cursor, and what is above if needed
+    </p>
+  </div>
+  <div class="span6">
+    <p class="text-center">
+      <img src="ocaml-top-resources/sc_error.png"
+           alt="Error location screenshot" class="img-rounded" />
+    </p>
+    <p class="text-center">
+      Locate your errors directly in your code
+    </p>
+  </div>
+</div>
+<h5><i class="icon-arrow-right"></i> Automatic type display</h5>
+<div class="row">
+  <div class="span6">
+    <p class="text-center">
+      <img src="ocaml-top-resources/sc_type.png"
+           alt="Play button screenshot" class="img-rounded" />
+    </p>
+    <p class="text-center">
+      Put your cursor on the name of a standard library function, and the type
+      shows up in the status bar. Non-intrusive, but here just when you need it.
+    </p>
+  </div>
+</div>
+<h5><i class="icon-arrow-right"></i> Fully compatible with Microsoft Windows XP, Vista, 7 and 8, OSX and
+  Linux.</h5>
+
+<h2>Documentation</h2>
+
+<h3>Installation</h3>
+
+<div class="row">
+<div class="span6">
+<p>On <b>Linux</b> or <b>OSX</b>, we recommend you use
+  the <a href="http://opam.ocamlpro.com">OPAM</a> package manager:</p>
+
+<p>First <a href="http://opam.ocaml.org/doc/Quick_Install.html">install
+    opam</a> and some gtk dependancies. For example, with Ubuntu:</p>
+<pre>add-apt-repository ppa:avsm/ppa
+apt-get update
+apt-get install m4 libgtksourceview2.0-dev opam</pre>
+
+<p>Then you need to install OCaml:</p>
+<pre>opam init default 4.01.0+ocp-bin</pre>
+
+<p>Finally install ocaml-top</p>
+<pre>opam install ocaml-top</pre>
+
+</div>
+
+<div class="span6">
+<p>On <b>Microsoft Windows</b>, download and run our <a href="https://github.com/OCamlPro/ocaml-top/releases">binary
+installer</a>. You will also need a working installation of OCaml itself,
+for which we
+recommend <a href="http://gallium.inria.fr/~protzenk/caml-installer/ocaml-4.00.1-i686-mingw64.exe">the
+installer by Jonathan Protzenko</a>. You need no extra options besides OCaml
+itself.</p>
+</div>
+</div>
+
+<h3>Usage</h3>
+
+<div class="row">
+  <div class="span6">
+    <p>The left pane is the code editor, while the right pane contains the OCaml
+      process that will execute the code.</p>
+
+    <p>The <img style="height: 2ex;" src="ocaml-top-resources/eval_marker.png"
+        alt="green mark"/> in the left margin of the editor is
+        the <em>evaluation mark</em>, showing that the code has been
+        successfully executed up to that point. When pressing the
+        <img style="height: 2ex;" src="ocaml-top-resources/execute.png"
+        alt="PLAY"/> button (or <span class=label>Ctrl e</span>), the
+        expression under the cursor is sent to the OCaml pane, and the answer
+        from OCaml is displayed there. In case of an error, the relevant part of
+        the code in the editor is highlighted.</p>
+  </div>
+
+  <div class="span6">
+    <p>Since programs are usually written in order, the <em>evaluation mark</em>
+      always progresses from top to bottom, and everything in-between the
+      current mark position and the expression to run will be sent to OCaml
+      first. If you happen to need execution of an expression directly, select
+      it before pressing <img style="height: 2ex;"
+      src="ocaml-top-resources/execute.png" alt="PLAY"/>.</p>
+
+    <p>The <img style="height: 2ex;" src="ocaml-top-resources/execute-all.png"
+      alt="FAST-FORWARD"/> button runs the whole program. In case you
+      get confused, the <img style="height: 2ex;"
+      src="ocaml-top-resources/restart.png" alt="REWIND"/> button
+      restarts a fresh OCaml, rewinds the evaluation mark, and clears the
+      right pane. And in case you got yourself in a loop, or your
+      program just takes too long, the <img style="height: 2ex;"
+      src="ocaml-top-resources/stop.png" alt="STOP"/> button can
+      interrupt the current computation.</p>
+  </div>
+</div>
+
+<h3>Keyboard shortcuts</h3>
+<div class="row">
+  <div class="offset1 span4">
+    <table class="table table-bordered table-striped">
+      <tr><th colspan="2">File management</th></tr>
+      <tr><td><span class="label">Ctrl n</span></td>
+        <td>Start with a new (blank) file</td>
+      </tr>
+      <tr><td><span class="label">Ctrl o</span></td><td>Load a file</td></tr>
+      <tr><td><span class="label">Ctrl s</span></td><td>Save the current file</td></tr>
+    </table>
+    <table class="table table-bordered table-striped">
+      <tr><th colspan="2">Edition</th></tr>
+      <tr><td><span class="label">Ctrl c</span></td><td>Copy</td></tr>
+      <tr><td><span class="label">Ctrl x</span></td><td>Cut</td></tr>
+      <tr><td><span class="label">Ctrl v</span></td><td>Paste</td></tr>
+      <tr><td><span class="label">Ctrl z</span></td><td>Undo</td></tr>
+      <tr><td><span class="label">Ctrl Shift z</span></td><td>Redo</td></tr>
+    </table>
+  </div>
+
+  <div class="offset2 span4">
+    <table class="table table-bordered table-striped">
+      <tr><th colspan="2">Execution</th></tr>
+      <tr><td><span class="label">Ctrl e</span></td>
+        <td>Execute the current expression</td>
+      </tr>
+      <tr><td><span class="label">Escape</span></td>
+        <td>Stop ongoing execution</td>
+      </tr>
+    </table>
+    <table class="table table-bordered table-striped">
+      <tr><th colspan="2">General</th></tr>
+      <tr><td><span class="label">Ctrl +</span></td><td>Zoom in</td></tr>
+      <tr><td><span class="label">Ctrl -</span></td><td>Zoom out</td></tr>
+      <tr><td><span class="label">F4</span></td><td>Select font</td></tr>
+      <tr><td><span class="label">F5</span></td><td>Switch colors</td></tr>
+      <tr><td><span class="label">F11</span></td><td>Switch fullscreen</td></tr>
+      <tr><td><span class="label">Ctrl q</span></td><td>Quit</td></tr>
+    </table>
+  </div>
+</div>
+
+<h2>Resources</h2>
+<a id="downloads"></a>
+
+<table class="table table-striped">
+
+<tr>
+  <td><a href="http://www.github.com/OCamlPro/ocaml-top">OCaml-Top on Github</a></td>
+  <td>Latest sources in the official GIT repository</td>
+</tr>
+<tr>
+  <td>
+    <a href="https://github.com/OCamlPro/ocaml-top/releases">
+      Version OCAMLTOP
+    </a>
+  </td>
+  <td>
+    Download for Linux, OSX and Windows
+  </td>
+</tr>
+</table>
+
+<br />
+
+<br />
+
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+
+</div>
+</div>
+
+#include "body.trailer.include"
+
+</body>
+</html>

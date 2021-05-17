@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>ocp-build -- Documentation</title>
+      <link rel="stylesheet" href="style.css" type="text/css"/>
+      <link rel="alternate" type="application/atom+xml" href="http://www.ocamlpro.com/feed/atom.xml"/>
+
+      <script src="http://www.ocamlpro.com/files/jquery.min.js" type="text/javascript">
+      </script>
+      <script src="http://www.ocamlpro.com/files/quotes.js" type="text/javascript">
+      </script>
+      <script src="http://www.ocamlpro.com/files/footer.js" type="text/javascript">
+      </script>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    </head>
+    <body>
+      <div class="nav_header">
+    <div class="nav">
+      <div class="container">
+        <div class="nav_left">
+          <a href="http://www.ocamlpro.com/index.html"><div class="banner">.</div></a>
+        </div>
+        <div class="nav_right">
+          <ul>
+    <li><a href="index.html">ocp-build</a></li>
+    <li><a href="download.html">Download</a></li>
+    <li><a href="docs.html">Documentation</a></li>
+    <li><a href="http://github.com/OCamlPro/typerex">On GitHub</a></li>
+        </div>
+      </div>
+    </div>
+  </div>
+      <div class="body">
+      <div class="container">
+        <div class="one_column">
+           <h1><code>ocp-build</code></h1><hr/>
+    <h2> Documentation</h2>
+<h3>User Manual</h3>
+    <p>A User Manual is available in <a href="ocp-build-user-manual.pdf">PDF format</a></p>
+
+<h3>From the command line</h3>
+
+<p>You can also find documentation on the command line:
+<pre><code>$ ocp-build -help
+ocp-build [OPTIONS] SUBCOMMAND [OPTIONS] [PACKAGES]
+
+The following subcommands are available:
+
+   ocp-build root                 Set project root directory
+   ocp-build configure            Configure project options
+   ocp-build project              Query project information
+   ocp-build build                Build project
+   ocp-build install              Install packages
+   ocp-build test                 Build and run package tests
+   ocp-build clean                Clean build artefacts
+   ocp-build query                Query environment information
+   ocp-build uninstall            Uninstall packages
+
+Use 'ocp-build SUBCOMMAND -help' to get more information
+
+If you don't use a subcommand, the following raw options
+available:
+
+  -h  Print short help
+  -help  Print short help
+  --help  Print long help (with compatibility options)
+  -long-help  Print long help (with compatibility options)
+  -version  Print version information
+  -about  Print version information
+</code></pre>
+
+or for a given sub-command:
+<pre><code>% ocp-build build -help
+Subcommand:
+
+     ocp-build build [OPTIONS] [PACKAGES]
+
+Build this project
+
+Available options in this mode:
+  -k                          Continue after errors
+
+You can override the configuration also:
+
+  -njobs NUM                  Number of processes to start in parallel
+  -v NUM                      Verbosity level
+  -verbosity NUM              Verbosity level
+  -asm                        Compile in native code
+  -byte                       Compile in bytecode
+  -scan                       Scan sub-directories
+  -ocamlfind                  Try to Use ocamlfind to locate META files
+  -no-asm                     Do not compile in native code
+  -no-byte                    Do not compile in bytecode
+  -no-scan                    Don't scan sub-directories
+  -no-ocamlfind               Don't try to use ocamlfind to locate META files
+</code></pre>
+
+<h3>Examples of package package descriptions</h3>
+    </div>
+    <div class="column1">
+    <h4>Adding options</h4>
+    </div>
+    <div class="column2">
+<h4>Using Camlp4 Syntaxes</h4>
+
+<p>
+Using a camlp4 syntax is as easy as this file, taken from TryOCaml:
+<pre><code>
+begin syntax "ocp-jslib-syntax"
+  install = false
+  requires = [
+      "js_of_ocaml.syntax"
+      "camlp4.syntax"
+  ]
+end
+
+begin library "ocp-jslib"
+  has_asm = false
+  syntax = "ocp-jslib-syntax"
+  files = [ "utils.ml" "button.ml"
+            "cookie.ml" "dragnDrop.ml" ]
+  requires = [ "ocp-jslib-syntax" ]
+end
+</code></pre>
+
+<h4>Defining Camlp4 Syntaxes</h4>
+<p>
+The following description defines a syntax package
+<code>js_of_ocaml.syntax</code>: </p>
+<pre><code>
+(* first, the objects *)
+begin objects "js_of_ocaml.syntax.objs"
+
+  (* already installed *)
+  generated = true
+
+  (* in this directory *)
+  dirname = [ "%{js_of_ocaml_SRC_DIR}%" ]
+
+  (* only one object file *)
+  files = [ "pa_js.ml" ]
+
+  (* dependency towards camlp4 *)
+  requires = [ "camlp4lib"
+                 "camlp4-pa-op" ]
+end
+
+(* now, the syntax *)
+begin syntax "js_of_ocaml.syntax"
+
+  (* already installed *)
+  generated = true
+
+  (* to use this syntax, we need
+     the syntax objects, and camlp4 *)
+  requires = [
+        "js_of_ocaml.syntax.objs"
+        "camlp4"
+      ]
+end
+
+(* Also a syntax to specify that we want
+  to use camlp4 (and not camlp4o, etc.)*)
+begin syntax "camlp4.syntax"
+  (* already installed *)
+  generated = true
+  requires = ["camlp4"]
+end
+</code></pre>
+
+    </div>
+
+
+
+    </div>
+    </div>
+        </div>
+      </div>
+      </div>
+      <div class="nav_footer">
+    <div class="container">
+      <div class="nav">
+      </div>
+    </div>
+  </div>
+      <div class="footer">
+  <div class="container">
+  <div class="icons">
+  <div class="icon">
+    <a href="https://github.com/OCamlPro">
+      <img src="http://www.ocamlpro.com/files/github.png"/>
+    </a>
+  </div>
+  <div class="icon">
+    <a href="http://www.ocamlpro.com/feed/atom.xml">
+      <img src="http://www.ocamlpro.com/files/rss.png"/>
+    </a>
+  </div>
+  </div>
+  <div class="copyright">
+    © 2011 OCamlPro SAS, All rights reserved.
+    <a href="mailto:contact@ocamlpro.com">Contact an administrator</a>.
+  </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  var disqus_shortname = 'ocamlpro';
+
+  (function () {
+    var s = document.createElement('script');
+    s.async = true;
+    s.type = 'text/javascript';
+    s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+    document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+
+</script>
+
+    </body>
+  </html>
+

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <meta name="keywords"
+  content="Objective-Caml,Objective,Caml,Ocaml,compilers,patches,caml-light,sml,haskell,scheme,lisp,functional,languages,ocamlc,ocamlopt,cmo,cmx,cma,platform,development,open-source,free-software,native" />
+  <meta name="description"
+  content="TypeRex is a set of open-source tools and libraries for OCaml, developed by OCamlPro." />
+  <script src="js/jquery.min.js" type="text/javascript"></script>
+  <script src="js/transition.js" type="text/javascript"></script>
+  <script src="js/bootstrap-carousel.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22552764-3']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+   <title>TypeRex: OCaml for Windows</title>
+</head>
+<body>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+       <a class="brand" href="index.html">TypeRex</a>
+       <ul class="nav pull-right">
+         <li><a href="index.html">Home</a></li>
+         <li class="divider-vertical">
+         <li><a href="http://memprof.typerex.org/">Memprof</a></li>
+         <li><a href="ocpwin.html">OCPWin</a></li>
+         <li><a href="ocp-indent.html">ocp-indent</a></li>
+         <li><a href="ocp-index.html">ocp-index</a></li>
+         <li><a href="ocaml-top.html">ocaml-top</a></li>
+         <li><a href="support.html">Support</a></li>
+         <li class="divider-vertical">
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="content">
+<div class="container">
+<h1>OCPWin, an OCaml distribution for Windows</h1>
+<table width="100%">
+<tr><td width="70%">
+  <p>OCPWin is a binary OCaml distribution for Windows.
+It is self-contained and runs natively on Windows, which means you can
+ generate OCaml applications with it without installing Cygwin or Windows SDK.
+</p>
+<p>
+The license allows you to distribute applications compiled with OCPWin
+for commercial purpose, as long as you do not distribute the OCaml compiler
+itself.</p>
+</td>
+<td width="3%"></td>
+<td>
+<a href="images/ocpwin-graphics.png"><img src="images/ocpwin-graphics.png" alt="Graphics in OCPWin" width="100%" /></a>
+</td>
+</tr>
+</table>
+        <hr />
+<div class="span12">
+<h3>Download and Install</h3>
+    <p> Find the most recent version for your system (64bits works only on
+ 64bits Windows, 32bits works on both 32 and 64 bit windows), and then follow
+ the step by step instructions below.</p>
+<table class="table table-striped">
+<tr><td><a href="http://www.ocamlpro.com/pub/ocpwin/ocpwin-builds/ocpwin32/">32bits versions</a></td><td>32bits installers</td></tr>
+<tr><td><a href="http://www.ocamlpro.com/pub/ocpwin/ocpwin-builds/ocpwin64/">64bits versions</a></td><td>64bits installers</td></tr>
+<tr><td><a href="ocpwin-graphical-install.html">Graphical Install</a></td><td>Installation Instructions for the Graphical installers</td></tr>
+<tr><td><a href="ocpwin-manual-install.html">Manual Install</a></td><td>Installation Instructions for zip files</td></tr>
+</table>
+<h3>Usage</h3>
+<p>From 2016, OCPWin is managed by a tool
+called <code>ocpwin.exe</code>. The tool was mostly introduced to
+  avoid the PATH corrupting bug in NSIS installer.</p>
+<p>Thanks to this tool, it is now possible to install multiple
+versions of OCPWin at the same time on a computer, and to
+  use <code>ocpwin.exe</code> to switch between them.</p>
+<pre>
+$ ocpwin.exe -list
+4.01.0+ocp1-msvc64-20160113
+4.01.0+ocp1-msvc32-20160113
+4.01.0+ocp1-full-mingw64-20160113
+$ ocpwin.exe -switch 4.01.0+ocp1-full-mingw64-20160113
+</pre>
+<p>Unfortunately, <code>ocpwin.exe</code> cannot change the PATH in
+the current shell, so after using <code>ocpwin -switch</code>, you
+  should start a new terminal to enjoy the new settings.</p>
+<p>However, it is possible to use wrappers to avoid this problem. If
+  you use:</p>
+<pre>
+ocpwin.exe -multi-switch true
+</pre>
+<p><code>ocpwin.exe</code> will create a directory containing wrappers
+for all the OCaml commands, and add it in top of the PATH. These
+wrappers will always select the current switch OCaml commands, so you
+that any call to <code>ocpwin.exe -switch</code> will be immediatly
+seen in the current terminal.</p>
+<p>It is possible to remove these wrappers by calling:</p>
+<pre>
+ocpwin.exe -multi-switch false
+</pre>
+<h3>Components</h3>
+<p>OCPWin installs the following software:</p>
+<table class="table table-striped">
+  <tr><td>OCaml 4.01.0</td> <td>The OCaml distribution, version 4.01.0</td></tr>
+  <tr><td>FlexDLL</td> <td>A <a href="http://alain.frisch.fr/flexdll.html">smart linker</a> for OCaml</td></tr>
+  <tr><td>MinGW</td><td>The GCC toolchain for Windows</td></tr>
+  <tr><td>ocp-build</td><td>A <a href="ocp-build.html">simple build system</a> for OCaml</td></tr>
+  <tr><td>Some Extensions</td><td>Included OCaml Extensions by OCamlPro</td></tr>
+</table>
+<h3>Links</h3>
+<table class="table table-striped">
+<tr><td><a href="http://github.com/OCamlPro/ocpwin-distrib">Github</a></td><td>Knowledge Database (release notes and documentation)</td></tr>
+<tr><td><a href="http://www.ocamlpro.com/pub/ocpwin/flow-builds/">Flow-Builds</td><td>Unofficial builds of Facebook's <a href="http://flowtype.org/">Flow(type) language</a>, using OcpWin</td></tr>
+</table>
+<br />
+<br />
+<div class="right">
+<p><a class="btn btn-large btn-primary" href="http://www.ocamlpro.com/">
+OCamlPro &rsaquo;&rsaquo;</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="container">
+   <div class="rows">
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="http://opam.ocaml.org/">OPAM</a></li>
+        <li><a href="operf-micro.html">operf-micro</a></li>
+        <li><a href="operf-macro.html">operf-macro</a></li>
+        <li><a href="ocaml-top.html">ocaml-top</a></li>
+     </ul>
+    </div>
+    <div class="span2">
+     <ul>
+       <li><h4>Tools</h4></li>
+        <li><a href="ocp-build.html">ocp-build</a></li>
+        <li><a href="ocp-indent.html">ocp-indent</a></li>
+        <li><a href="ocp-index.html">ocp-index</a></li>
+        <li><a href="ocp-ocamlres.html">ocp-ocamlres</a></li>
+        <li><a href="ocp-manager.html">ocp-manager</a></li>
+     </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Libraries</h4></li>
+        <li><a href="ocplib-endian.html">ocplib-endian</a></li>
+        <li><a href="ocplib-wxOCaml.html">ocplib-wxOCaml</a></li>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul>
+        <li><h4>Toolchains</h4></li>
+        <li><a href="http://memprof.ocamlpro.com/">The OCaml Memory Profiler</a></li>
+        <li><a href="ocpwin.html">OCPWin, OCaml for Windows</a></li>
+        <li><a href=""></a></li>
+        <li><h4>Online Ressources</h4></li>
+        <li><a href="cheatsheets.html">OCaml Cheat Sheets</a></li>
+        <li><a href="http://try.ocamlpro.com/">Try-OCaml</a></li>
+      </ul>
+    </div>
+   </div>
+  </div>
+<div class="container">
+ <div class="contribute">
+   This website is edited by <a href="http://www.ocamlpro.com/">OCamlPro</a>.
+   You can contribute information by cloning the project on
+   <a href="https://www.github.com/OCamlPro/typerex.org">github</a>.
+ </div>
+</div>
+</body>
+</html>
